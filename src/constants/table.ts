@@ -1,42 +1,32 @@
-export const table = [
+import { ITable, IUpdateTable } from 'src/types/table.type';
+
+export const table: ITable[] = [
   {
     id: '1',
     commandName: 'First command',
-    functional: 0,
-    code: 0,
-    design: 0,
-    sum: 0,
+    functional: '0',
+    code: '0',
+    design: '0',
+    sum: '0',
   },
   {
     id: '2',
     commandName: 'Second command',
-    functional: 0,
-    code: 0,
-    design: 0,
-    sum: 0,
+    functional: '0',
+    code: '0',
+    design: '0',
+    sum: '0',
   },
 ];
 
-const calcSum = ({ id }: { id: string }) => {
-  const index = table.findIndex((item) => item.id === id);
+export const updateTable = (updateTable: IUpdateTable[]) => {
+  for (let i = 0; i < table.length; i++) {
+    const indexUpdateTable = updateTable.findIndex((item) => item.id === table[i].id);
 
-  const calcTable = table[index];
-  calcTable.sum = +calcTable.functional + +calcTable.code + +calcTable.design;
-};
+    table[i].functional = updateTable[indexUpdateTable].functional;
+    table[i].code = updateTable[indexUpdateTable].code;
+    table[i].design = updateTable[indexUpdateTable].design;
 
-export const updateTable = ({
-  id,
-  param,
-  value,
-}: {
-  id: string;
-  param: 'code' | 'functional' | 'design';
-  value: string;
-}) => {
-  const index = table.findIndex((item) => item.id === id);
-
-  const updateTable = table[index];
-  updateTable[param] = +value;
-
-  calcSum({ id });
+    table[i].sum = (+table[i].functional + +table[i].code + +table[i].design).toString();
+  }
 };
