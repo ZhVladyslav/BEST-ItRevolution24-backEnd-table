@@ -66,7 +66,7 @@ export const table: ITable[] = [
   },
   {
     id: '8',
-    commandName: 'Мехмати з Вомбату',
+    commandName: 'Вомбати з Мехмату',
     mainF: '0',
     optionF: '0',
     design: '0',
