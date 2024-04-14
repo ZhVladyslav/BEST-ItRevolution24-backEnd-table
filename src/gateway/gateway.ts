@@ -8,7 +8,8 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 import { table, updateTable } from 'src/constants/table';
-import { IUpdateTable } from 'src/types/table.type';
+import { IUpdateTable, IUpdateTableGame } from 'src/types/table.type';
+import { tableGame, updateTableGame } from '../constants/table-game';
 
 @WebSocketGateway(3030, { cors: true })
 export class Gateway implements OnModuleInit, OnGatewayDisconnect {
@@ -17,6 +18,7 @@ export class Gateway implements OnModuleInit, OnGatewayDisconnect {
 
   newTableInfo() {
     this.server.emit('newTableInfo', table);
+    this.server.emit('newTableGameInfo', tableGame);
   }
 
   onModuleInit() {
@@ -24,6 +26,7 @@ export class Gateway implements OnModuleInit, OnGatewayDisconnect {
       console.log(`Connection: ${socket.id}`);
 
       socket.emit('tableInfo', table);
+      socket.emit('tableGameInfo', tableGame);
     });
   }
 
@@ -34,6 +37,12 @@ export class Gateway implements OnModuleInit, OnGatewayDisconnect {
   @SubscribeMessage('updateTable')
   getUpdateTable(@MessageBody() body: IUpdateTable[]) {
     updateTable(body);
+    this.newTableInfo();
+  }
+
+  @SubscribeMessage('updateTableGame')
+  getUpdateTableGame(@MessageBody() body: IUpdateTableGame[]) {
+    updateTableGame(body);
     this.newTableInfo();
   }
 }
